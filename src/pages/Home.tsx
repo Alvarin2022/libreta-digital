@@ -39,11 +39,12 @@ export default function Home() {
         <Card sx={{ mb: 2 }}>
           <CardContent>
             <Button
-              fullWidth
-              variant="contained"
-              startIcon={<ShoppingCartIcon />}
-            >
-              Venta al contado
+            fullWidth
+            variant="contained"
+            startIcon={<ShoppingCartIcon />}
+            href="/venta"
+        >
+            Venta al contado
             </Button>
           </CardContent>
         </Card>
