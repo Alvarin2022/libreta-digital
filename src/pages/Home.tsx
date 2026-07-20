@@ -1,8 +1,11 @@
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -39,13 +42,13 @@ export default function Home() {
         <Card sx={{ mb: 2 }}>
           <CardContent>
             <Button
-            fullWidth
-            variant="contained"
-            startIcon={<ShoppingCartIcon />}
-            href="/venta"
-        >
-            Venta al contado
-            </Button>
+  fullWidth
+  variant="contained"
+  startIcon={<ShoppingCartIcon />}
+  onClick={() => navigate("/venta")}
+>
+  Venta al contado
+</Button>
           </CardContent>
         </Card>
 

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -22,7 +23,11 @@ export default function CashSale() {
 
   const [items, setItems] = useState<SaleItem[]>([]);
 
+  const [completed, setCompleted] = useState(false);
+
   const productRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+
 
 
   const addItem = () => {
@@ -63,6 +68,7 @@ export default function CashSale() {
   };
 
 
+
   const removeItem = (id:number) => {
 
     setItems((prevItems) =>
@@ -74,10 +80,141 @@ export default function CashSale() {
   };
 
 
+
+  const finishSale = () => {
+
+    if(items.length === 0){
+      return;
+    }
+
+    setCompleted(true);
+
+  };
+
+
+
+  const newSale = () => {
+
+    setItems([]);
+
+    setCompleted(false);
+
+    setProduct("");
+    setPrice("");
+
+    setTimeout(() => {
+      productRef.current?.focus();
+    }, 0);
+
+  };
+
+
+
   const total = items.reduce(
     (sum,item)=> sum + item.price,
     0
   );
+
+
+
+  if(completed){
+
+    return (
+
+      <Box
+        sx={{
+          padding:3,
+          textAlign:"center",
+        }}
+      >
+
+        <Typography
+          variant="h2"
+          sx={{
+            mb:3,
+          }}
+        >
+          ✅
+        </Typography>
+
+
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight:"bold",
+            mb:3,
+          }}
+        >
+          Venta realizada
+        </Typography>
+
+
+        <Typography
+          variant="h5"
+          sx={{
+            mb:3,
+          }}
+        >
+          Total: ${total}
+        </Typography>
+
+
+        <Typography
+          variant="h6"
+          sx={{
+            mb:1,
+          }}
+        >
+          Muchas gracias por su preferencia.
+        </Typography>
+
+
+        <Typography
+          variant="h6"
+        >
+          ¡Los esperamos nuevamente!
+        </Typography>
+
+
+        <Typography
+          variant="h6"
+          sx={{
+            mt:2,
+            fontWeight:"bold",
+          }}
+        >
+          🏪 Almacén Lo de Inés
+        </Typography>
+
+
+
+        <Button
+          variant="contained"
+          size="large"
+          sx={{
+            mt:4,
+          }}
+          onClick={newSale}
+        >
+          Nueva venta
+        </Button>
+        <Button
+  variant="outlined"
+  size="large"
+  sx={{
+    mt:2,
+  }}
+  onClick={() => navigate("/")}
+>
+  Volver al inicio
+</Button>
+
+
+      </Box>
+
+    );
+
+  }
 
 
 
@@ -88,6 +225,15 @@ export default function CashSale() {
         padding:3,
       }}
     >
+      <Button
+  variant="text"
+  onClick={() => navigate("/")}
+  sx={{
+    mb:2,
+  }}
+>
+  ← Volver al inicio
+</Button>
 
 
       <Typography
@@ -116,9 +262,6 @@ export default function CashSale() {
 
 
 
-        {/* FORMULARIO */}
-
-
         <Card>
 
           <CardContent>
@@ -143,7 +286,7 @@ export default function CashSale() {
               value={product}
               onChange={(e)=>setProduct(e.target.value)}
               sx={{
-                mb:2
+                mb:2,
               }}
             />
 
@@ -165,9 +308,8 @@ export default function CashSale() {
               }}
 
               sx={{
-                mb:2
+                mb:2,
               }}
-
             />
 
 
@@ -185,12 +327,10 @@ export default function CashSale() {
 
           </CardContent>
 
+
         </Card>
 
 
-
-
-        {/* DETALLE */}
 
 
         <Card>
@@ -214,7 +354,6 @@ export default function CashSale() {
             {
               items.length === 0 ?
 
-
               (
 
                 <Typography
@@ -225,14 +364,11 @@ export default function CashSale() {
 
               )
 
-
               :
-
 
               (
 
                 <Box>
-
 
                   {
                     items.map((item)=>(
@@ -262,7 +398,6 @@ export default function CashSale() {
                           }}
                         >
 
-
                           <Typography>
                             ${item.price}
                           </Typography>
@@ -272,11 +407,13 @@ export default function CashSale() {
                           <IconButton
                             size="small"
                             color="error"
-                            onClick={()=>
+                            onClick={() =>
                               removeItem(item.id)
                             }
                           >
-                            <DeleteIcon/>
+
+                            <DeleteIcon />
+
                           </IconButton>
 
 
@@ -314,6 +451,21 @@ export default function CashSale() {
             >
               Total: ${total}
             </Typography>
+
+
+
+            <Button
+              fullWidth
+              variant="contained"
+              color="success"
+              size="large"
+              sx={{
+                mt:3,
+              }}
+              onClick={finishSale}
+            >
+              Finalizar venta
+            </Button>
 
 
 
