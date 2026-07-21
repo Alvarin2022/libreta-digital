@@ -23,49 +23,63 @@ export default function CashSale() {
 
   const [items, setItems] = useState<SaleItem[]>([]);
 
-  const [completed, setCompleted] = useState(false);
+const [completed, setCompleted] = useState(false);
 
-  const productRef = useRef<HTMLInputElement>(null);
+const [productError, setProductError] = useState("");
+const [priceError, setPriceError] = useState("");
+
+const productRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
 
 
   const addItem = () => {
 
-    const productName = product.trim();
-    const productPrice = Number(price);
+  setProductError("");
+  setPriceError("");
 
+  const productName = product.trim();
+  const productPrice = Number(price);
 
-    if (productName === "") {
-      productRef.current?.focus();
-      return;
-    }
+  if (productName === "") {
 
+    setProductError("Debe ingresar un producto.");
+    productRef.current?.focus();
+    return;
 
-    if (isNaN(productPrice) || productPrice <= 0) {
-      return;
-    }
+  }
 
+  if (price.trim() === "") {
 
-    setItems((prevItems) => [
-      ...prevItems,
-      {
-        id: Date.now(),
-        product: productName,
-        price: productPrice,
-      },
-    ]);
+    setPriceError("Debe ingresar un precio.");
+    return;
 
+  }
 
-    setProduct("");
-    setPrice("");
+  if (isNaN(productPrice) || productPrice <= 0) {
 
+    setPriceError("El precio debe ser mayor a $0.");
+    return;
 
-    setTimeout(() => {
-      productRef.current?.focus();
-    }, 0);
+  }
 
-  };
+  setItems((prevItems) => [
+    ...prevItems,
+    {
+      id: Date.now(),
+      product: productName,
+      price: productPrice,
+    },
+  ]);
+
+  setProduct("");
+  setPrice("");
+
+  setTimeout(() => {
+    productRef.current?.focus();
+  }, 0);
+
+};
 
 
 
@@ -109,6 +123,10 @@ export default function CashSale() {
   };
 
 
+const canAddProduct =
+  product.trim() !== "" &&
+  price.trim() !== "" &&
+  Number(price) > 0;
 
   const total = items.reduce(
     (sum,item)=> sum + item.price,
@@ -202,7 +220,7 @@ export default function CashSale() {
   variant="outlined"
   size="large"
   sx={{
-    mt:2,
+    mt:4,
   }}
   onClick={() => navigate("/")}
 >
@@ -280,48 +298,67 @@ export default function CashSale() {
 
 
             <TextField
-              inputRef={productRef}
-              fullWidth
-              label="Producto"
-              value={product}
-              onChange={(e)=>setProduct(e.target.value)}
-              sx={{
-                mb:2,
-              }}
-            />
+  inputRef={productRef}
+  fullWidth
+  label="Producto"
+  value={product}
+  error={productError !== ""}
+  helperText={productError}
+  onChange={(e) => {
+
+    setProduct(e.target.value);
+
+    if (productError) {
+      setProductError("");
+    }
+
+  }}
+  sx={{
+    mb:2,
+  }}
+/>
 
 
 
             <TextField
-              fullWidth
-              label="Precio ($)"
-              type="number"
-              value={price}
-              onChange={(e)=>setPrice(e.target.value)}
+  fullWidth
+  label="Precio ($)"
+  type="number"
+  value={price}
+  error={priceError !== ""}
+  helperText={priceError}
+  onChange={(e) => {
 
-              onKeyDown={(e)=>{
+    setPrice(e.target.value);
 
-                if(e.key==="Enter"){
-                  addItem();
-                }
+    if (priceError) {
+      setPriceError("");
+    }
 
-              }}
+  }}
+  onKeyDown={(e) => {
 
-              sx={{
-                mb:2,
-              }}
-            />
+    if (e.key === "Enter") {
+      addItem();
+    }
+
+  }}
+  sx={{
+    mb:2,
+  }}
+/>
 
 
 
-            <Button
-              fullWidth
-              variant="contained"
-              size="large"
-              onClick={addItem}
-            >
-              Agregar producto
-            </Button>
+           <Button
+  fullWidth
+  variant="contained"
+  size="large"
+  disabled={!canAddProduct}
+  onClick={addItem}
+>
+  Agregar producto
+</Button>
 
 
 
@@ -455,17 +492,18 @@ export default function CashSale() {
 
 
             <Button
-              fullWidth
-              variant="contained"
-              color="success"
-              size="large"
-              sx={{
-                mt:3,
-              }}
-              onClick={finishSale}
-            >
-              Finalizar venta
-            </Button>
+  fullWidth
+  variant="contained"
+  color="success"
+  size="large"
+  disabled={items.length === 0}
+  sx={{
+    mt:3,
+  }}
+  onClick={finishSale}
+>
+  Finalizar venta
+</Button>
 
 
 
