@@ -140,11 +140,12 @@ const canAddProduct =
     return (
 
       <Box
-        sx={{
-          padding:3,
-          textAlign:"center",
-        }}
-      >
+  sx={{
+    padding: 3,
+    minHeight: "100vh",
+    backgroundColor: "#fafafa",
+  }}
+>
 
         <Typography
           variant="h2"
@@ -268,21 +269,31 @@ const canAddProduct =
 
 
       <Box
-        sx={{
-          display:"grid",
-          gridTemplateColumns:{
-            xs:"1fr",
-            md:"400px 1fr",
-          },
-          gap:3,
-        }}
-      >
+  sx={{
+    display: "grid",
+
+    gridTemplateColumns: {
+      xs: "1fr",
+      lg: "320px 1fr",
+    },
+
+    gap: 4,
+
+    alignItems: "start",
+
+    width: "100%",
+  }}
+>
 
 
 
-        <Card>
+        <Card
+  sx={{
+    minHeight: "70vh",
+  }}
+>
 
-          <CardContent>
+  <CardContent>
 
 
             <Typography
@@ -405,65 +416,76 @@ const canAddProduct =
 
               (
 
-                <Box>
+                <Box
+  sx={{
+    display: "grid",
+    gridTemplateColumns: {
+      xs: "1fr",
+      sm: "repeat(2, 1fr)",
+      lg: "repeat(3, 1fr)",
+    },
+    gap: 2,
+  }}
+>
+{
+  items.map((item)=>(
+    
+    <Box
+  key={item.id}
+  sx={{
+    backgroundColor: "#eeeeee",
+    borderRadius: 2,
+    padding: 1.5,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    boxShadow: "0 2px 5px rgba(0,0,0,0.12)",
+  }}
+>
 
-                  {
-                    items.map((item)=>(
+      <Box>
+        <Typography
+          sx={{
+            fontWeight:600,
+          }}
+        >
+          {item.product}
+        </Typography>
 
-                      <Box
-                        key={item.id}
-                        sx={{
-                          display:"flex",
-                          justifyContent:"space-between",
-                          alignItems:"center",
-                          py:1,
-                        }}
-                      >
-
-
-                        <Typography>
-                          {item.product}
-                        </Typography>
-
-
-
-                        <Box
-                          sx={{
-                            display:"flex",
-                            alignItems:"center",
-                            gap:1,
-                          }}
-                        >
-
-                          <Typography>
-                            ${item.price}
-                          </Typography>
-
-
-
-                          <IconButton
-                            size="small"
-                            color="error"
-                            onClick={() =>
-                              removeItem(item.id)
-                            }
-                          >
-
-                            <DeleteIcon />
-
-                          </IconButton>
-
-
-                        </Box>
+        <Typography
+  sx={{
+    fontSize: "1.2rem",
+    fontWeight: 700,
+    color: "#2e7d32",
+  }}
+>
+  ${item.price}
+</Typography>
+      </Box>
 
 
-                      </Box>
+      <IconButton
+  size="small"
+  sx={{
+    padding: 0.5,
+    color: "#d32f2f",
+    "&:hover": {
+    backgroundColor: "rgba(211,47,47,0.08)",
+  },
+  }}
+  onClick={() =>
+    removeItem(item.id)
+  }
+>
+  <DeleteIcon fontSize="small" />
+</IconButton>
 
-                    ))
-                  }
 
+    </Box>
 
-                </Box>
+  ))
+}
+</Box>
 
               )
 
