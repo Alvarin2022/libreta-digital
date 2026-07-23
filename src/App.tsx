@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
 import CashSale from "./pages/CashSale";
+import SaleTicket from "./pages/SaleTicket";
 
 function App() {
   return (
@@ -16,6 +17,10 @@ function App() {
         <Route 
           path="/venta" 
           element={<CashSale />} 
+        />
+        <Route
+          path="/ticket"
+          element={<SaleTicket />}
         />
 
       </Routes>

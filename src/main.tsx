@@ -5,6 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import App from "./App";
 import theme from "./theme/theme";
+import { SaleProvider } from "./context/SaleContext";
 
 import "./index.css";
 
@@ -12,7 +13,10 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <App />
+
+      <SaleProvider>
+        <App />
+      </SaleProvider>
     </ThemeProvider>
-  </StrictMode>
+  </StrictMode>,
 );
