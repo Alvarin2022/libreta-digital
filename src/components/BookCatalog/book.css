@@ -1,0 +1,285 @@
+.catalog-background {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle, #555 0%, #2b2b2b 100%);
+  overflow: hidden;
+}
+
+.book {
+  position: relative;
+  width: 1150px;
+  height: 720px;
+  perspective: 3500px;
+  transform-style: preserve-3d;
+}
+
+.book-spread {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #efe8d7;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.45);
+}
+
+.left-page,
+.right-page {
+  width: 50%;
+  height: 100%;
+  position: relative;
+}
+
+.turning-page {
+  transform-style: preserve-3d;
+}
+
+.page-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+.back-face {
+  transform: rotateY(180deg);
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+  background: #faf6eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-content {
+  width: 95%;
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+}
+
+.image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container img {
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.25));
+  transition: 0.35s;
+}
+
+.image-container img:hover {
+  transform: scale(1.04);
+}
+
+.page-footer {
+  text-align: center;
+  padding: 18px;
+}
+
+.page-footer h2 {
+  margin: 0;
+  font-size: 28px;
+  color: #3d3d3d;
+  font-family: Georgia, serif;
+}
+
+.page-category {
+  display: block;
+  margin-top: 8px;
+  color: #9a8d73;
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+/* Lomo */
+
+.book-spine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 100%;
+  background: linear-gradient(to right, #8f8677, #f5edde, #8f8677);
+  z-index: 100;
+  box-shadow:
+    inset 0 0 18px rgba(0, 0, 0, 0.35),
+    0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Bordes */
+
+.book-top-edge,
+.book-bottom-edge {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  height: 10px;
+  background: repeating-linear-gradient(
+    90deg,
+    #f7f4ee,
+    #ece7dd 4px,
+    #ddd7cb 8px
+  );
+  z-index: 5;
+}
+
+.book-top-edge {
+  top: -10px;
+  border-radius: 8px 8px 0 0;
+}
+
+.book-bottom-edge {
+  bottom: -10px;
+  border-radius: 0 0 8px 8px;
+}
+
+.book-right-edge {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  right: -10px;
+  width: 10px;
+  background: repeating-linear-gradient(
+    180deg,
+    #f7f4ee,
+    #ece7dd 4px,
+    #ddd7cb 8px
+  );
+}
+
+/* Portada */
+
+.book-cover {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 500;
+}
+
+.cover-front,
+.cover-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+.cover-back {
+  transform: rotateY(180deg);
+  background: #efe8d7;
+}
+
+.cover-front {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #7d1c1c, #541111 60%, #360707);
+  color: #e6cf91;
+  box-shadow: 18px 0 35px rgba(0, 0, 0, 0.45);
+}
+
+.cover-frame {
+  width: 82%;
+  height: 86%;
+  border: 3px solid #d5b264;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover-logo {
+  font-size: 60px;
+  margin-bottom: 45px;
+}
+
+.cover-frame h1 {
+  margin: 0;
+  font-size: 52px;
+  letter-spacing: 5px;
+}
+
+.cover-frame h2 {
+  margin: 20px 0 45px;
+  font-size: 36px;
+}
+
+.cover-frame p {
+  font-size: 22px;
+}
+
+.cover-back-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #555;
+}
+.next-page {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  width: 50%;
+  height: 100%;
+
+  z-index: 1;
+}
+
+.turning-page {
+  position: absolute;
+
+  right: 0;
+  top: 0;
+
+  width: 50%;
+  height: 100%;
+
+  transform-origin: left center;
+
+  transform-style: preserve-3d;
+
+  z-index: 10;
+}
+
+.page-face {
+  position: absolute;
+
+  inset: 0;
+
+  backface-visibility: hidden;
+}
+
+.front-face {
+  background: #faf6eb;
+}
+
+.back-face {
+  background: #faf6eb;
+
+  transform: rotateY(180deg);
+
+  box-shadow: inset 25px 0 40px rgba(0, 0, 0, 0.18);
+}
+
+.book-spread {
+  position: relative;
+
+  overflow: hidden;
+}

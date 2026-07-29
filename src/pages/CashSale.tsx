@@ -34,8 +34,8 @@ export default function CashSale() {
 
   const productRef = useRef<HTMLInputElement>(null);
   const priceRef = useRef<HTMLInputElement>(null);
-
   const navigate = useNavigate();
+
   const { setTicket } = useSale();
 
   const addItem = () => {
