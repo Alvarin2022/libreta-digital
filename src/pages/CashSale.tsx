@@ -36,7 +36,7 @@ export default function CashSale() {
   const priceRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const { setTicket } = useSale();
+  const { ticket, setTicket } = useSale();
 
   const addItem = () => {
     setProductError("");
@@ -187,16 +187,13 @@ export default function CashSale() {
             🏪 Almacén Lo de Inés
           </Typography>
 
-          <TicketDrawer
-            open={showTicket}
-            ticket={{
-              id: Date.now(),
-              date: new Date(),
-              items,
-              total,
-            }}
-            onClose={() => setShowTicket(false)}
-          />
+          {ticket && (
+            <TicketDrawer
+              open={showTicket}
+              ticket={ticket}
+              onClose={() => setShowTicket(false)}
+            />
+          )}
 
           <Button
             variant="contained"
