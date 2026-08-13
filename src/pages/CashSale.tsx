@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 import { SaleItem } from "../models/SaleItem";
 import { useSale } from "../context/useSale";
@@ -67,6 +69,7 @@ export default function CashSale() {
         id: Date.now(),
         product: productName,
         price: productPrice,
+        quantity: 1,
       },
     ]);
 
@@ -80,6 +83,18 @@ export default function CashSale() {
 
   const removeItem = (id: number) => {
     setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
+
+  const updateQuantity = (id: number, quantity: number) => {
+    if (quantity < 1) {
+      return;
+    }
+
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id ? { ...item, quantity } : item
+      )
+    );
   };
 
   const finishSale = () => {
@@ -115,7 +130,7 @@ export default function CashSale() {
   const canAddProduct =
     product.trim() !== "" && price.trim() !== "" && Number(price) > 0;
 
-  const total = items.reduce((sum, item) => sum + item.price, 0);
+  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   if (completed) {
     return (
@@ -450,12 +465,18 @@ export default function CashSale() {
                       borderRadius: 2,
                       padding: 1.5,
                       display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                      flexDirection: "column",
+                      gap: 1,
                       boxShadow: "0 2px 5px rgba(0,0,0,0.12)",
                     }}
                   >
-                    <Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
                       <Typography
                         sx={{
                           fontWeight: 600,
@@ -464,6 +485,73 @@ export default function CashSale() {
                         {item.product}
                       </Typography>
 
+                      <IconButton
+                        size="small"
+                        sx={{
+                          padding: 0.5,
+                          color: "#d32f2f",
+                          "&:hover": {
+                            backgroundColor: "rgba(211,47,47,0.08)",
+                          },
+                        }}
+                        onClick={() => removeItem(item.id)}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
+                        }}
+                      >
+                        <IconButton
+                          size="small"
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity - 1)
+                          }
+                        >
+                          <RemoveIcon fontSize="small" />
+                        </IconButton>
+
+                        <Typography
+                          sx={{
+                            fontWeight: 700,
+                            minWidth: 24,
+                            textAlign: "center",
+                          }}
+                        >
+                          {item.quantity}
+                        </Typography>
+
+                        <IconButton
+                          size="small"
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity + 1)
+                          }
+                        >
+                          <AddIcon fontSize="small" />
+                        </IconButton>
+
+                        <Typography
+                          sx={{
+                            color: "#757575",
+                            fontSize: "0.85rem",
+                          }}
+                        >
+                          × ${item.price}
+                        </Typography>
+                      </Box>
+
                       <Typography
                         sx={{
                           fontSize: "1.2rem",
@@ -471,23 +559,9 @@ export default function CashSale() {
                           color: "#2e7d32",
                         }}
                       >
-                        ${item.price}
+                        ${item.price * item.quantity}
                       </Typography>
                     </Box>
-
-                    <IconButton
-                      size="small"
-                      sx={{
-                        padding: 0.5,
-                        color: "#d32f2f",
-                        "&:hover": {
-                          backgroundColor: "rgba(211,47,47,0.08)",
-                        },
-                      }}
-                      onClick={() => removeItem(item.id)}
-                    >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
                   </Box>
                 ))}
               </Box>

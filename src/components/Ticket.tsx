@@ -190,7 +190,9 @@ export default function Ticket({ ticket }: TicketProps) {
             sx={{
               display: "flex",
               justifyContent: "space-between",
+              alignItems: "center",
               mb: 1,
+              gap: 1,
             }}
           >
             <Typography
@@ -199,6 +201,7 @@ export default function Ticket({ ticket }: TicketProps) {
                 fontWeight: 700,
                 fontSize: "0.95rem",
                 color: "#37474f",
+                flex: 1,
               }}
             >
               {item.product.toUpperCase()}
@@ -207,11 +210,23 @@ export default function Ticket({ ticket }: TicketProps) {
             <Typography
               sx={{
                 fontFamily: "'Courier New', monospace",
-                fontWeight: 700,
-                color: "#1b5e20",
+                fontSize: "0.85rem",
+                color: "#607d8b",
+                whiteSpace: "nowrap",
               }}
             >
-              ${item.price}
+              {item.quantity} x ${item.price}
+            </Typography>
+
+            <Typography
+              sx={{
+                fontFamily: "'Courier New', monospace",
+                fontWeight: 700,
+                color: "#1b5e20",
+                whiteSpace: "nowrap",
+              }}
+            >
+              ${item.price * item.quantity}
             </Typography>
           </Box>
         ))}
