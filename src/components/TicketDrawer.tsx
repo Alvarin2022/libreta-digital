@@ -35,7 +35,7 @@ export default function TicketDrawer({
           width: 420,
           maxWidth: "95vw",
           padding: 2,
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "#f2f8fc",
           minHeight: "100vh",
         }}
       >

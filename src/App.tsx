@@ -8,7 +8,7 @@ import BookCatalog from "./components/BookCatalog/BookCatalog";
 import useInactivity from "./hooks/useInactivity";
 
 function App() {
-  const inactive = useInactivity(120000);
+  const { inactive, returnToApp } = useInactivity(120000);
 
   return (
     <>
@@ -25,10 +25,10 @@ function App() {
             position: "fixed",
             inset: 0,
             zIndex: 9999,
-            backgroundColor: "#ffffff",
+            backgroundColor: "#f2f8fc",
           }}
         >
-          <BookCatalog />
+          <BookCatalog onExit={returnToApp} />
         </Box>
       )}
     </>

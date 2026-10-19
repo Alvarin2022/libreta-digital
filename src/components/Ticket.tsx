@@ -8,6 +8,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import ShareIcon from "@mui/icons-material/Share";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
 
 import { SaleTicket } from "../models/SaleTicket";
 
@@ -101,8 +102,8 @@ export default function Ticket({ ticket }: TicketProps) {
           maxWidth: 360,
           margin: "0 auto",
           padding: 4,
-          backgroundColor: "#fffef7",
-          border: "1px solid #d7d7d7",
+          backgroundColor: "#fafdff",
+          border: "1px solid #d7e7f1",
           borderRadius: 3,
           boxShadow: "0 10px 25px rgba(0,0,0,.18)",
         }}
@@ -113,13 +114,16 @@ export default function Ticket({ ticket }: TicketProps) {
             mb: 2,
           }}
         >
-          <Typography variant="h3">🏪</Typography>
+          <ReceiptLongRoundedIcon
+            aria-hidden="true"
+            sx={{ color: "#126aa5", fontSize: 38, mb: 0.5 }}
+          />
 
           <Typography
             variant="h5"
             sx={{
               fontWeight: 700,
-              color: "#37474f",
+              color: "#163a52",
             }}
           >
             Almacén Lo de Inés
@@ -127,7 +131,7 @@ export default function Ticket({ ticket }: TicketProps) {
 
           <Typography
             sx={{
-              color: "#9e9e9e",
+              color: "#7891a1",
               fontSize: "0.8rem",
               mt: 0.5,
             }}
@@ -138,7 +142,7 @@ export default function Ticket({ ticket }: TicketProps) {
           <Typography
             variant="body2"
             sx={{
-              color: "#757575",
+              color: "#5f7686",
               letterSpacing: 1,
             }}
           >
@@ -148,7 +152,7 @@ export default function Ticket({ ticket }: TicketProps) {
 
         <Box
           sx={{
-            borderBottom: "2px dashed #bdbdbd",
+            borderBottom: "2px dashed #b8cfde",
             my: 2,
           }}
         />
@@ -157,7 +161,7 @@ export default function Ticket({ ticket }: TicketProps) {
           variant="subtitle1"
           sx={{
             fontFamily: "'Courier New', monospace",
-            color: "#455a64",
+            color: "#294f68",
           }}
         >
           Ticket Nº {ticket.id}
@@ -165,7 +169,7 @@ export default function Ticket({ ticket }: TicketProps) {
 
         <Typography
           sx={{
-            color: "#78909c",
+            color: "#5d849b",
             fontSize: "0.9rem",
             mb: 2,
           }}
@@ -179,7 +183,7 @@ export default function Ticket({ ticket }: TicketProps) {
 
         <Box
           sx={{
-            borderBottom: "2px dashed #bdbdbd",
+            borderBottom: "2px dashed #b8cfde",
             my: 2,
           }}
         />
@@ -200,7 +204,7 @@ export default function Ticket({ ticket }: TicketProps) {
                 fontFamily: "'Courier New', monospace",
                 fontWeight: 700,
                 fontSize: "0.95rem",
-                color: "#37474f",
+                color: "#163a52",
                 flex: 1,
               }}
             >
@@ -211,7 +215,7 @@ export default function Ticket({ ticket }: TicketProps) {
               sx={{
                 fontFamily: "'Courier New', monospace",
                 fontSize: "0.85rem",
-                color: "#607d8b",
+                color: "#54768c",
                 whiteSpace: "nowrap",
               }}
             >
@@ -222,7 +226,7 @@ export default function Ticket({ ticket }: TicketProps) {
               sx={{
                 fontFamily: "'Courier New', monospace",
                 fontWeight: 700,
-                color: "#1b5e20",
+                color: "#126aa5",
                 whiteSpace: "nowrap",
               }}
             >
@@ -237,8 +241,8 @@ export default function Ticket({ ticket }: TicketProps) {
             mb: 2,
             padding: 2,
             borderRadius: 2,
-            backgroundColor: "#e8f5e9",
-            border: "2px solid #2e7d32",
+            backgroundColor: "#e7f3fa",
+            border: "2px solid #78b5d7",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -248,7 +252,7 @@ export default function Ticket({ ticket }: TicketProps) {
             variant="h6"
             sx={{
               fontWeight: "bold",
-              color: "#1b5e20",
+              color: "#0c4d7d",
             }}
           >
             TOTAL
@@ -258,7 +262,7 @@ export default function Ticket({ ticket }: TicketProps) {
             variant="h5"
             sx={{
               fontWeight: 700,
-              color: "#1b5e20",
+              color: "#0c4d7d",
             }}
           >
             ${ticket.total}
@@ -267,7 +271,7 @@ export default function Ticket({ ticket }: TicketProps) {
 
         <Box
           sx={{
-            borderBottom: "2px dashed #bdbdbd",
+            borderBottom: "2px dashed #b8cfde",
             my: 2,
           }}
         />

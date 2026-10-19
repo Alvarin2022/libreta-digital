@@ -38,7 +38,7 @@ export default function CashSale() {
   const priceRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const { ticket, setTicket } = useSale();
+  const { ticket, setTicket, addToHistory, nextTicketId } = useSale();
 
   const addItem = () => {
     setProductError("");
@@ -103,13 +103,14 @@ export default function CashSale() {
     }
 
     const ticket: SaleTicket = {
-      id: Date.now(),
+      id: nextTicketId,
       date: new Date(),
       items: items,
       total: total,
     };
 
     setTicket(ticket);
+    addToHistory(ticket);
 
     setCompleted(true);
   };
@@ -137,7 +138,7 @@ export default function CashSale() {
       <Box
         sx={{
           minHeight: "100vh",
-          backgroundColor: "#f5f5f5",
+          backgroundColor: "#edf6fb",
 
           display: "flex",
           justifyContent: "center",
@@ -199,7 +200,7 @@ export default function CashSale() {
               fontWeight: "bold",
             }}
           >
-            🏪 Almacén Lo de Inés
+            Almacén Lo de Inés
           </Typography>
 
           {ticket && (
@@ -215,7 +216,7 @@ export default function CashSale() {
             size="large"
             sx={{
               mt: 2,
-              backgroundColor: "#2e7d32",
+              backgroundColor: "#126aa5",
               color: "#fff",
               fontWeight: "bold",
 
@@ -223,18 +224,18 @@ export default function CashSale() {
 
               "@keyframes pulseTicket": {
                 "0%": {
-                  backgroundColor: "#2e7d32",
+                  backgroundColor: "#126aa5",
                 },
                 "50%": {
-                  backgroundColor: "#66bb6a",
+                  backgroundColor: "#4a9fd2",
                 },
                 "100%": {
-                  backgroundColor: "#2e7d32",
+                  backgroundColor: "#126aa5",
                 },
               },
 
               "&:hover": {
-                backgroundColor: "#1b5e20",
+                backgroundColor: "#0c4d7d",
               },
             }}
             onClick={() => setShowTicket(true)}
@@ -461,7 +462,7 @@ export default function CashSale() {
                   <Box
                     key={item.id}
                     sx={{
-                      backgroundColor: "#eeeeee",
+                      backgroundColor: "#f0f7fb",
                       borderRadius: 2,
                       padding: 1.5,
                       display: "flex",
@@ -556,7 +557,7 @@ export default function CashSale() {
                         sx={{
                           fontSize: "1.2rem",
                           fontWeight: 700,
-                          color: "#2e7d32",
+                          color: "#126aa5",
                         }}
                       >
                         ${item.price * item.quantity}

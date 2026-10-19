@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function useInactivity(timeout = 120000) {
   const [inactive, setInactive] = useState(false);
+  const resetTimerRef = useRef<() => void>(() => undefined);
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -15,6 +16,19 @@ export default function useInactivity(timeout = 120000) {
       }, timeout);
     };
 
+    resetTimerRef.current = resetTimer;
+
+    const handleActivity = (event: Event) => {
+      if (
+        event.target instanceof Element &&
+        event.target.closest("[data-promotional-carousel]")
+      ) {
+        return;
+      }
+
+      resetTimer();
+    };
+
     resetTimer();
 
     const events = [
@@ -25,18 +39,20 @@ export default function useInactivity(timeout = 120000) {
       "scroll",
     ];
 
-    events.forEach((event) =>
-      window.addEventListener(event, resetTimer)
-    );
+    events.forEach((event) => window.addEventListener(event, handleActivity));
 
     return () => {
       clearTimeout(timer);
+      resetTimerRef.current = () => undefined;
 
       events.forEach((event) =>
-        window.removeEventListener(event, resetTimer)
+        window.removeEventListener(event, handleActivity)
       );
     };
   }, [timeout]);
 
-  return inactive;
+  return {
+    inactive,
+    returnToApp: () => resetTimerRef.current(),
+  };
 }
