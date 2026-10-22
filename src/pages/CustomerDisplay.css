@@ -1,0 +1,933 @@
+#root:has(.customer-display-page) {
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.customer-display-page {
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  color: #173c57;
+  background:
+    radial-gradient(ellipse at 50% -15%, rgba(255, 255, 255, 0.96), transparent 58%),
+    linear-gradient(145deg, #e8f4fb 0%, #dcecf7 58%, #cddfeb 100%);
+  font-family: Roboto, "Helvetica", Arial, sans-serif;
+}
+
+.customer-display-frame {
+  width: min(1380px, 100%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.7vh, 18px);
+  margin: 0 auto;
+  padding: clamp(14px, 2.3vw, 30px);
+}
+
+.customer-display-header {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  flex: 0 0 auto;
+}
+
+.customer-brand-mark {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 15px;
+  color: #fff;
+  background: linear-gradient(145deg, #3293d1, #1265aa);
+  box-shadow: 0 8px 18px rgba(18, 101, 170, 0.18);
+}
+
+.customer-brand-mark svg {
+  font-size: 24px;
+}
+
+.customer-brand-name.MuiTypography-root {
+  margin: 0 0 1px;
+  color: #63839a;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.15px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.customer-page-title.MuiTypography-root {
+  margin: 0;
+  color: #164b7b;
+  font-size: clamp(21px, 2.3vw, 27px);
+  font-weight: 750;
+  letter-spacing: -0.45px;
+  line-height: 1.18;
+}
+
+.customer-clock {
+  min-width: 158px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  margin-left: auto;
+  padding: 7px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.66);
+  box-shadow: 0 4px 14px rgba(29, 82, 120, 0.055);
+}
+
+.customer-clock-time.MuiTypography-root {
+  color: #164b7b;
+  font-size: clamp(17px, 2vw, 22px);
+  font-variant-numeric: tabular-nums;
+  font-weight: 750;
+  letter-spacing: 0.7px;
+  line-height: 1.15;
+}
+
+.customer-clock-date.MuiTypography-root {
+  color: #68859a;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.85px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.customer-display-card.MuiCard-root {
+  min-height: 0;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  border-radius: clamp(18px, 2.5vw, 30px);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 22px 62px rgba(29, 82, 120, 0.12), 0 3px 10px rgba(29, 82, 120, 0.04);
+}
+
+.customer-display-content.MuiCardContent-root {
+  min-height: 0;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  overflow: hidden;
+  padding: clamp(14px, 2.2vw, 30px);
+}
+
+.customer-display-content.is-welcome.MuiCardContent-root {
+  padding: 0;
+}
+
+.customer-purchase-view {
+  min-height: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.customer-purchase-heading {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+  margin-bottom: clamp(12px, 2vh, 20px);
+}
+
+.customer-purchase-heading-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 14px;
+  color: #1873b0;
+  background: #e7f3fa;
+}
+
+.customer-purchase-heading-icon svg {
+  font-size: 23px;
+}
+
+.customer-section-eyebrow.MuiTypography-root {
+  margin: 0 0 2px;
+  color: #6d8ba0;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.1px;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.customer-section-title.MuiTypography-root {
+  margin: 0;
+  color: #164b7b;
+  font-size: clamp(18px, 2.1vw, 23px);
+  font-weight: 750;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+}
+
+.customer-item-count {
+  margin-left: auto;
+  padding: 8px 12px;
+  border: 1px solid #dceaf3;
+  border-radius: 99px;
+  color: #397394;
+  background: #f5fafe;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.customer-items-columns,
+.customer-item-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 84px 150px 150px;
+  align-items: center;
+  column-gap: clamp(8px, 1.4vw, 20px);
+}
+
+.customer-items-columns {
+  flex: 0 0 auto;
+  padding: 10px 18px;
+  color: #67859a;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.8px;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.customer-items-columns > :first-child {
+  text-align: left;
+}
+
+.customer-column-quantity {
+  text-align: center;
+}
+
+.customer-items-list {
+  min-height: 0;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 9px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 2px 4px 4px 0;
+  scrollbar-color: #b5cddc transparent;
+  scrollbar-width: thin;
+}
+
+.customer-item-row {
+  grid-template-areas: "name quantity unit subtotal";
+  flex: 0 0 auto;
+  min-height: 62px;
+  padding: 10px 18px;
+  border: 1px solid #e4eef5;
+  border-radius: 16px;
+  background: linear-gradient(110deg, #fff 0%, #f9fcfe 100%);
+  box-shadow: 0 2px 8px rgba(27, 76, 107, 0.035);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  animation: customer-row-appear 220ms ease both;
+}
+
+.customer-item-row:hover {
+  transform: translateY(-1px);
+  border-color: #cbdfea;
+  box-shadow: 0 5px 14px rgba(27, 76, 107, 0.07);
+}
+
+.customer-item-name.MuiTypography-root {
+  grid-area: name;
+  min-width: 0;
+  color: #173c57;
+  font-size: clamp(14px, 1.5vw, 18px);
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.customer-item-quantity.MuiTypography-root {
+  grid-area: quantity;
+  justify-self: center;
+  min-width: 34px;
+  padding: 5px 9px;
+  border-radius: 9px;
+  color: #366984;
+  background: #edf5fa;
+  font-size: 14px;
+  font-weight: 750;
+  text-align: center;
+}
+
+.customer-item-unit-price.MuiTypography-root {
+  grid-area: unit;
+  color: #627f92;
+  font-size: 14px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.customer-item-subtotal.MuiTypography-root {
+  grid-area: subtotal;
+  color: #126aa5;
+  font-size: clamp(15px, 1.55vw, 19px);
+  font-weight: 750;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.customer-item-subtotal span {
+  display: none;
+}
+
+.customer-item-mobile-detail.MuiTypography-root {
+  display: none;
+}
+
+.customer-total-wrap {
+  flex: 0 0 auto;
+  padding-top: 3px;
+}
+
+.customer-total-divider.MuiDivider-root {
+  margin: 12px 0 14px;
+  border-color: #e4eef5;
+}
+
+.customer-total-panel {
+  min-height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px clamp(17px, 3vw, 32px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 20px;
+  color: #fff;
+  background: linear-gradient(112deg, #2785c8 0%, #176eae 58%, #125d9c 100%);
+  box-shadow: 0 11px 24px rgba(18, 101, 170, 0.2);
+}
+
+.customer-total-caption.MuiTypography-root {
+  color: rgba(255, 255, 255, 0.98);
+  font-size: clamp(16px, 1.8vw, 20px);
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.customer-total-note.MuiTypography-root {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
+  letter-spacing: 0.25px;
+}
+
+.customer-total-amount.MuiTypography-root {
+  color: #fff;
+  font-size: clamp(27px, 4.5vw, 42px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.customer-idle-view {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 38%, rgba(255, 255, 255, 0.55), transparent 57%),
+    linear-gradient(145deg, #dbeaf5, #c9deec);
+}
+
+.customer-idle-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  padding: clamp(4px, 1vw, 14px);
+  animation: customer-image-arrive 450ms ease both;
+}
+
+.customer-promo-card {
+  position: absolute;
+  right: clamp(12px, 2vw, 24px);
+  bottom: clamp(12px, 2vw, 24px);
+  width: min(354px, calc(100% - 24px));
+  min-height: 118px;
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) 34px;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  border-radius: 19px;
+  background: rgba(255, 255, 255, 0.93);
+  box-shadow: 0 14px 36px rgba(25, 70, 103, 0.19);
+  backdrop-filter: blur(12px);
+}
+
+.customer-promo-image-wrap {
+  width: 92px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #f4f9fc, #e8f2f8);
+}
+
+.customer-promo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 7px;
+  filter: drop-shadow(0 5px 6px rgba(25, 70, 103, 0.13));
+  animation: customer-image-arrive 320ms ease both;
+}
+
+.customer-promo-details {
+  min-width: 0;
+  align-self: center;
+  animation: customer-image-arrive 320ms ease both;
+}
+
+.customer-promo-label.MuiTypography-root {
+  overflow: hidden;
+  color: #6b899e;
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.75px;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.customer-promo-name.MuiTypography-root {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 4px;
+  color: #173f59;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.customer-promo-price.MuiTypography-root {
+  margin-top: 5px;
+  color: #126aa5;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.customer-promo-controls {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.customer-promo-arrow.MuiIconButton-root {
+  width: 31px;
+  height: 31px;
+  color: #287bab;
+  background: #edf5fa;
+  transition: color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.customer-promo-arrow.MuiIconButton-root:hover {
+  transform: scale(1.06);
+  color: #fff;
+  background: #1d77b5;
+}
+
+.customer-promo-arrow.MuiIconButton-root svg {
+  font-size: 20px;
+}
+
+.customer-promo-position.MuiTypography-root {
+  color: #7893a4;
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.customer-completed-layout {
+  min-height: 0;
+  display: flex;
+  flex: 1;
+  gap: clamp(12px, 2vw, 24px);
+}
+
+.customer-completed-layout.has-ticket {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+}
+
+.customer-completed-layout .customer-thank-you {
+  min-width: 0;
+  border: 1px solid #e5f0f6;
+  border-radius: 22px;
+  background:
+    radial-gradient(ellipse at 50% 10%, #fff 0%, transparent 70%),
+    linear-gradient(145deg, #f8fcff, #eef6fb);
+}
+
+.customer-completed-ticket {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: clamp(12px, 1.6vw, 20px);
+  border: 1px solid #e1edf5;
+  border-radius: 20px;
+  background: linear-gradient(155deg, #f8fbfe, #eef5fa);
+}
+
+.customer-ticket-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  margin: 0 auto 14px;
+  width: min(560px, 100%);
+}
+
+.customer-close-ticket.MuiIconButton-root {
+  width: 42px;
+  height: 42px;
+  color: #286c96;
+  background: #edf5fa;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.customer-close-ticket.MuiIconButton-root:hover {
+  transform: rotate(4deg);
+  background: #dfedf6;
+}
+
+.customer-next-sale-button.MuiButton-root {
+  min-height: 46px;
+  flex: 0 0 auto;
+  margin-top: 12px;
+  border-radius: 13px;
+  color: #fff;
+  background: linear-gradient(110deg, #2785c8 0%, #1265aa 100%);
+  box-shadow: 0 8px 18px rgba(18, 101, 170, 0.2);
+  font-size: 14px;
+  font-weight: 750;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.customer-next-sale-button.MuiButton-root:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(110deg, #2785c8 0%, #1265aa 100%);
+  box-shadow: 0 11px 22px rgba(18, 101, 170, 0.25);
+}
+
+.customer-ticket-scroll {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 2px 8px 12px;
+  scrollbar-color: #b5cddc transparent;
+  scrollbar-width: thin;
+}
+
+.customer-ticket-scroll > .MuiBox-root {
+  animation: customer-image-arrive 260ms ease both;
+}
+
+.customer-thank-you {
+  min-height: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+}
+
+.customer-thank-you-icon {
+  width: clamp(74px, 10vw, 102px);
+  height: clamp(74px, 10vw, 102px);
+  display: grid;
+  place-items: center;
+  margin-bottom: clamp(15px, 3vh, 25px);
+  border: 1px solid #d6eaf5;
+  border-radius: 30px;
+  color: #2785c8;
+  background: linear-gradient(145deg, #eff8fd, #dceef8);
+  box-shadow: 0 12px 28px rgba(39, 133, 200, 0.12);
+  animation: customer-image-arrive 350ms ease both;
+}
+
+.customer-thank-you-icon svg {
+  font-size: clamp(42px, 6vw, 58px);
+}
+
+.customer-thank-you-title.MuiTypography-root {
+  color: #164b7b;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 780;
+  letter-spacing: -0.65px;
+}
+
+.customer-thank-you-message.MuiTypography-root {
+  margin-top: 8px;
+  color: #607f94;
+  font-size: clamp(15px, 2vw, 19px);
+}
+
+.customer-display-page :focus-visible {
+  outline: 3px solid #56a5d3;
+  outline-offset: 3px;
+}
+
+@keyframes customer-image-arrive {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes customer-row-appear {
+  from { opacity: 0.6; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 700px) {
+  .customer-display-frame {
+    gap: 9px;
+    padding: 10px;
+  }
+
+  .customer-display-header {
+    min-height: 42px;
+    gap: 10px;
+  }
+
+  .customer-brand-mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 13px;
+  }
+
+  .customer-brand-name.MuiTypography-root {
+    font-size: 9px;
+    letter-spacing: 0.8px;
+  }
+
+  .customer-page-title.MuiTypography-root {
+    font-size: 20px;
+  }
+
+  .customer-clock {
+    min-width: 0;
+    padding: 6px 8px;
+    border-radius: 11px;
+  }
+
+  .customer-clock-time.MuiTypography-root {
+    font-size: 16px;
+    letter-spacing: 0.35px;
+  }
+
+  .customer-clock-date.MuiTypography-root {
+    font-size: 7px;
+    letter-spacing: 0.55px;
+  }
+
+  .customer-display-card.MuiCard-root {
+    border-radius: 20px;
+  }
+
+  .customer-display-content.MuiCardContent-root {
+    padding: 14px;
+  }
+
+  .customer-display-content.is-welcome.MuiCardContent-root {
+    padding: 0;
+  }
+
+  .customer-purchase-heading {
+    min-height: 46px;
+    gap: 9px;
+    margin-bottom: 10px;
+  }
+
+  .customer-purchase-heading-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+  }
+
+  .customer-section-eyebrow.MuiTypography-root {
+    font-size: 9px;
+  }
+
+  .customer-section-title.MuiTypography-root {
+    font-size: 17px;
+  }
+
+  .customer-item-count {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .customer-items-columns {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: 8px 11px;
+    font-size: 9px;
+  }
+
+  .customer-column-quantity,
+  .customer-column-unit-price {
+    display: none;
+  }
+
+  .customer-item-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "name subtotal"
+      "detail subtotal";
+    min-height: 63px;
+    column-gap: 8px;
+    row-gap: 3px;
+    padding: 9px 11px;
+    border-radius: 13px;
+  }
+
+  .customer-item-name.MuiTypography-root {
+    font-size: 13px;
+  }
+
+  .customer-item-quantity.MuiTypography-root,
+  .customer-item-unit-price.MuiTypography-root {
+    display: none;
+  }
+
+  .customer-item-subtotal.MuiTypography-root {
+    font-size: 14px;
+  }
+
+  .customer-item-subtotal span {
+    display: block;
+    margin-bottom: 2px;
+    color: #7892a3;
+    font-size: 9px;
+    font-weight: 650;
+    text-align: right;
+  }
+
+  .customer-item-mobile-detail.MuiTypography-root {
+    grid-area: detail;
+    display: block;
+    color: #71899a;
+    font-size: 10px;
+    line-height: 1.25;
+  }
+
+  .customer-total-divider.MuiDivider-root {
+    margin: 8px 0 10px;
+  }
+
+  .customer-total-panel {
+    min-height: 70px;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 15px;
+  }
+
+  .customer-total-caption.MuiTypography-root {
+    font-size: 15px;
+  }
+
+  .customer-total-note.MuiTypography-root {
+    font-size: 9px;
+  }
+
+  .customer-total-amount.MuiTypography-root {
+    font-size: clamp(24px, 7vw, 32px);
+  }
+
+  .customer-promo-card {
+    right: 10px;
+    bottom: 10px;
+    width: min(340px, calc(100% - 20px));
+    min-height: 92px;
+    grid-template-columns: 68px minmax(0, 1fr) 30px;
+    gap: 9px;
+    padding: 8px;
+    border-radius: 15px;
+  }
+
+  .customer-promo-image-wrap {
+    width: 68px;
+    height: 68px;
+    border-radius: 11px;
+  }
+
+  .customer-promo-image {
+    padding: 5px;
+  }
+
+  .customer-promo-label.MuiTypography-root {
+    font-size: 8px;
+  }
+
+  .customer-promo-name.MuiTypography-root {
+    margin-top: 3px;
+    font-size: 12px;
+  }
+
+  .customer-promo-price.MuiTypography-root {
+    margin-top: 3px;
+    font-size: 14px;
+  }
+
+  .customer-promo-arrow.MuiIconButton-root {
+    width: 28px;
+    height: 28px;
+  }
+
+  .customer-promo-position.MuiTypography-root {
+    font-size: 8px;
+  }
+
+  .customer-ticket-header {
+    margin-bottom: 8px;
+  }
+
+  .customer-completed-layout.has-ticket {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(110px, 0.34fr) minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .customer-completed-layout .customer-thank-you {
+    padding: 10px;
+    border-radius: 15px;
+  }
+
+  .customer-completed-ticket {
+    padding: 10px;
+    border-radius: 15px;
+  }
+
+  .customer-next-sale-button.MuiButton-root {
+    min-height: 42px;
+    margin-top: 8px;
+    font-size: 13px;
+  }
+
+  .customer-completed-layout .customer-thank-you-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 5px;
+    border-radius: 13px;
+  }
+
+  .customer-completed-layout .customer-thank-you-icon svg {
+    font-size: 27px;
+  }
+
+  .customer-completed-layout .customer-thank-you-title.MuiTypography-root {
+    font-size: clamp(17px, 4.7vw, 22px);
+  }
+
+  .customer-completed-layout .customer-thank-you-message.MuiTypography-root {
+    margin-top: 3px;
+    font-size: 12px;
+  }
+
+  .customer-ticket-scroll {
+    padding: 0 1px 8px;
+  }
+
+  .customer-ticket-scroll > .MuiBox-root {
+    padding: 20px !important;
+  }
+
+  .customer-thank-you {
+    padding: 12px;
+  }
+}
+
+@media (max-height: 620px) and (min-width: 701px) {
+  .customer-display-frame {
+    gap: 8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .customer-display-header {
+    min-height: 42px;
+  }
+
+  .customer-brand-mark {
+    width: 38px;
+    height: 38px;
+  }
+
+  .customer-purchase-heading {
+    margin-bottom: 6px;
+  }
+
+  .customer-item-row {
+    min-height: 48px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .customer-total-panel {
+    min-height: 68px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .customer-promo-card {
+    min-height: 98px;
+    grid-template-columns: 74px minmax(0, 1fr) 30px;
+    gap: 9px;
+  }
+
+  .customer-promo-image-wrap {
+    width: 74px;
+    height: 74px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .customer-display-page *,
+  .customer-display-page *::before,
+  .customer-display-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

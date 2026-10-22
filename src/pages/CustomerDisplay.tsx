@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -10,15 +10,64 @@ import {
 } from "@mui/material";
 import ShoppingBasketRoundedIcon from "@mui/icons-material/ShoppingBasketRounded";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
+import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useSale } from "../context/useSale";
 import Ticket from "../components/Ticket";
+import { catalog } from "../data/catalog";
+import { products } from "../data/products";
+import "./CustomerDisplay.css";
 
 const formatAmount = (amount: number) =>
   new Intl.NumberFormat("es-UY", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(amount);
+
+const clockFormatter = new Intl.DateTimeFormat("es-UY", {
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hourCycle: "h23",
+});
+
+const calendarFormatter = new Intl.DateTimeFormat("es-UY", {
+  weekday: "long",
+  day: "2-digit",
+  month: "long",
+});
+
+const formatClockDate = (date: Date) => {
+  const parts = calendarFormatter.formatToParts(date);
+  const weekday = parts.find((part) => part.type === "weekday")?.value ?? "";
+  const day = parts.find((part) => part.type === "day")?.value ?? "";
+  const month = parts.find((part) => part.type === "month")?.value ?? "";
+
+  return `${weekday} · ${day} ${month}`.toLocaleUpperCase("es-UY");
+};
+
+const normalizeName = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]/g, "")
+    .replace(/(ml|cc|kg|g|l)$/, "");
+
+const promotionalItems = catalog
+  .flatMap((spread) => [spread.left, spread.right])
+  .map((item) => {
+    const product = products.find(
+      (candidate) => normalizeName(candidate.name) === normalizeName(item.title),
+    );
+
+    return {
+      ...item,
+      price: product?.price,
+      category: item.image.includes("/bebidas/") ? "Bebidas" : "Lácteos",
+    };
+  });
 
 export default function CustomerDisplay() {
   const {
@@ -27,122 +76,242 @@ export default function CustomerDisplay() {
     notifyCustomerTicketOpened,
     notifyCustomerTicketClosed,
   } = useSale();
-  const [ticketOpen, setTicketOpen] = useState(false);
+  const [promoIndex, setPromoIndex] = useState(0);
+  const [currentTime, setCurrentTime] = useState(() => new Date());
   const isCompleted = customerSale.status === "completed";
   const hasItems = customerSale.status === "shopping" && customerSale.items.length > 0;
   const showWelcome = !isCompleted && !hasItems;
+  const activePromo = promotionalItems[promoIndex];
 
-  const openTicket = () => {
-    setTicketOpen(true);
-    notifyCustomerTicketOpened();
+  useEffect(() => {
+    if (isCompleted && customerSale.ticket) notifyCustomerTicketOpened();
+  }, [isCompleted, customerSale.ticket, notifyCustomerTicketOpened]);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (!showWelcome || promotionalItems.length < 2) return;
+
+    const interval = window.setInterval(() => {
+      setPromoIndex((index) => (index + 1) % promotionalItems.length);
+    }, 5500);
+
+    return () => window.clearInterval(interval);
+  }, [showWelcome]);
+
+  const changePromo = (direction: number) => {
+    setPromoIndex((index) =>
+      (index + direction + promotionalItems.length) % promotionalItems.length,
+    );
   };
 
   const closeTicket = () => {
-    setTicketOpen(false);
     publishCustomerSale([], 0, "welcome");
     notifyCustomerTicketClosed();
   };
 
   return (
-    <>
-      <Box
-        component="main"
-        sx={{
-          height: "100dvh",
-          minHeight: 0,
-          boxSizing: "border-box",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
-          px: { xs: 1.5, sm: 3, md: 5 },
-          py: { xs: 1.5, sm: 2.5 },
-          background:
-            "radial-gradient(ellipse at 50% 0%, #fff 0%, transparent 55%), linear-gradient(145deg, #e8f4fb 0%, #dcecf7 55%, #d1e4f1 100%)",
-        }}
-      >
-        <Box sx={{ width: "100%", maxWidth: 1100, mx: "auto", flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mb: { xs: 1.25, sm: 2 }, flexShrink: 0 }}>
-            <Box sx={{ width: 46, height: 46, display: "grid", placeItems: "center", flexShrink: 0, borderRadius: 3, color: "#fff", background: "linear-gradient(145deg, #2785c8, #1265aa)", boxShadow: "0 8px 20px rgba(18, 101, 170, 0.2)" }}>
-              <ShoppingBasketRoundedIcon />
-            </Box>
-            <Box>
-              <Typography sx={{ color: "#527992", fontSize: 12, fontWeight: 700, letterSpacing: 1.1, textTransform: "uppercase" }}>
-                Lo de Inés
-              </Typography>
-              <Typography component="h1" sx={{ color: "#164b7b", fontSize: { xs: 23, sm: 28 }, fontWeight: 700, lineHeight: 1.2 }}>
-                Su compra
-              </Typography>
-            </Box>
+    <Box component="main" className="customer-display-page">
+      <Box className="customer-display-frame">
+        <Box className="customer-display-header">
+          <Box className="customer-brand-mark" aria-hidden="true">
+            <ShoppingBasketRoundedIcon />
           </Box>
+          <Box>
+            <Typography className="customer-brand-name">Almacén Lo de Inés</Typography>
+            <Typography component="h1" className="customer-page-title">
+              Su compra
+            </Typography>
+          </Box>
+          <Box className="customer-clock" aria-label="Hora y fecha local">
+            <Typography
+              component="time"
+              dateTime={currentTime.toISOString()}
+              className="customer-clock-time"
+              aria-live="off"
+            >
+              {clockFormatter.format(currentTime)}
+            </Typography>
+            <Typography className="customer-clock-date">
+              {formatClockDate(currentTime)}
+            </Typography>
+          </Box>
+        </Box>
 
-          <Card elevation={0} sx={{ overflow: "hidden", flex: 1, minHeight: 0, display: "flex", flexDirection: "column", border: "1px solid rgba(255,255,255,0.9)", borderRadius: { xs: 3, sm: 4 }, backgroundColor: "rgba(255,255,255,0.95)", boxShadow: "0 24px 64px rgba(29, 82, 120, 0.12)" }}>
-            <CardContent sx={{ p: showWelcome ? 0 : { xs: 1.5, sm: 2.5, md: 3 }, flex: 1, minHeight: 0, display: "flex", flexDirection: "column", overflow: "hidden", "&:last-child": { pb: showWelcome ? 0 : { xs: 1.5, sm: 2.5, md: 3 } } }}>
-              {ticketOpen && customerSale.ticket ? (
-                <Box component="section" aria-label="Ticket de compra" sx={{ flex: 1, minHeight: 0, overflowY: "auto", overscrollBehavior: "contain" }}>
-                  <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1.5 }}>
-                    <Typography component="h2" sx={{ color: "#164b7b", fontSize: { xs: 18, sm: 22 }, fontWeight: 700 }}>
-                      Ticket de compra
-                    </Typography>
-                    <IconButton aria-label="Cerrar ticket" onClick={closeTicket} sx={{ color: "#164b7b" }}>
-                      <CloseRoundedIcon />
-                    </IconButton>
+        <Card className="customer-display-card" elevation={0}>
+          <CardContent
+            className={`customer-display-content${showWelcome ? " is-welcome" : ""}`}
+          >
+            {isCompleted ? (
+              <Box
+                className={`customer-completed-layout${customerSale.ticket ? " has-ticket" : ""}`}
+              >
+                <Box aria-live="assertive" className="customer-thank-you">
+                  <Box className="customer-thank-you-icon">
+                    <CheckCircleRoundedIcon />
                   </Box>
-                  <Ticket ticket={customerSale.ticket} showActions={false} />
-                </Box>
-              ) : isCompleted ? (
-                <Box aria-live="assertive" sx={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", px: 1, textAlign: "center" }}>
-                  <CheckCircleRoundedIcon sx={{ mb: 2, color: "#2785c8", fontSize: { xs: 64, sm: 80 } }} />
-                  <Typography component="h2" sx={{ color: "#164b7b", fontSize: { xs: 24, sm: 34 }, fontWeight: 750 }}>
+                  <Typography component="h2" className="customer-thank-you-title">
                     ¡Gracias por tu compra!
                   </Typography>
-                  <Typography sx={{ mt: 1, color: "#607f94", fontSize: { xs: 16, sm: 20 } }}>
+                  <Typography className="customer-thank-you-message">
                     ¡Te esperamos pronto!
                   </Typography>
-                  <Button variant="contained" onClick={openTicket} disabled={!customerSale.ticket} sx={{ mt: 3, px: 4, py: 1.25, borderRadius: 3, background: "linear-gradient(110deg, #2785c8 0%, #1265aa 100%)", fontWeight: 700 }}>
-                    Ver ticket
-                  </Button>
                 </Box>
-              ) : hasItems ? (
-                <Box aria-live="polite" aria-relevant="additions removals" sx={{ minHeight: 0, flex: 1, display: "flex", flexDirection: "column" }}>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1, flexShrink: 0 }}>
-                    <ShoppingBasketRoundedIcon sx={{ color: "#267fb5" }} />
-                    <Typography component="h2" sx={{ color: "#244f6b", fontSize: { xs: 17, sm: 20 }, fontWeight: 700 }}>Detalle de la compra</Typography>
-                  </Box>
-                  <Box sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr) auto", sm: "minmax(0, 1fr) 90px 150px 150px" }, gap: { xs: 0.5, sm: 1.25 }, px: { xs: 1, sm: 2 }, py: 0.75, color: "#527992", fontSize: { xs: 10, sm: 12 }, fontWeight: 700, textTransform: "uppercase", flexShrink: 0 }}>
-                    <Box>Producto</Box>
-                    <Box sx={{ display: { xs: "none", sm: "block" }, textAlign: "center" }}>Cantidad</Box>
-                    <Box sx={{ display: { xs: "none", sm: "block" }, textAlign: "right" }}>Precio unitario</Box>
-                    <Box sx={{ textAlign: "right" }}>Subtotal</Box>
-                  </Box>
-                  <Box sx={{ display: "grid", alignContent: "start", gap: { xs: 0.75, sm: 1 }, flex: 1, minHeight: 0, overflowY: "auto", overscrollBehavior: "contain", pr: 0.5 }}>
-                    {customerSale.items.map((item) => (
-                      <Box key={item.id} sx={{ display: "grid", gridTemplateColumns: { xs: "minmax(0, 1fr) auto", sm: "minmax(0, 1fr) 90px 150px 150px" }, alignItems: "center", columnGap: { xs: 1, sm: 1.5 }, rowGap: 0.25, p: { xs: 1.25, sm: 1.5 }, border: "1px solid #e1edf5", borderRadius: 2.5, backgroundColor: "#f7fbfe" }}>
-                        <Typography sx={{ minWidth: 0, color: "#163a52", fontSize: { xs: 14, sm: 17 }, fontWeight: 650, overflowWrap: "anywhere" }}>{item.product}</Typography>
-                        <Typography sx={{ display: { xs: "none", sm: "block" }, color: "#5f7686", fontSize: 14, textAlign: "center" }}>{item.quantity}</Typography>
-                        <Typography sx={{ display: { xs: "none", sm: "block" }, color: "#5f7686", fontSize: 14, textAlign: "right", whiteSpace: "nowrap" }}>$ {formatAmount(item.price)}</Typography>
-                        <Typography sx={{ gridColumn: { xs: "2", sm: "auto" }, gridRow: { xs: "1 / span 2", sm: "auto" }, color: "#126aa5", fontSize: { xs: 14, sm: 17 }, fontWeight: 700, textAlign: "right", whiteSpace: "nowrap" }}>
-                          <Box component="span" sx={{ display: { xs: "block", sm: "none" }, color: "#71899a", fontSize: 10, fontWeight: 600 }}>Subtotal</Box>
-                          $ {formatAmount(item.price * item.quantity)}
+                {customerSale.ticket && (
+                  <Box
+                    component="section"
+                    aria-label="Ticket de compra"
+                    className="customer-completed-ticket"
+                  >
+                    <Box className="customer-ticket-header">
+                      <Box>
+                        <Typography className="customer-section-eyebrow">Comprobante</Typography>
+                        <Typography component="h2" className="customer-section-title">
+                          Ticket de compra
                         </Typography>
-                        <Typography sx={{ display: { xs: "block", sm: "none" }, gridColumn: "1", gridRow: "2", color: "#5f7686", fontSize: 11 }}>Cantidad: {item.quantity} · Precio unitario: $ {formatAmount(item.price)}</Typography>
                       </Box>
-                    ))}
+                      <IconButton
+                        aria-label="Cerrar ticket"
+                        onClick={closeTicket}
+                        className="customer-close-ticket"
+                      >
+                        <CloseRoundedIcon />
+                      </IconButton>
+                    </Box>
+                    <Box className="customer-ticket-scroll">
+                      <Ticket ticket={customerSale.ticket} showActions={false} />
+                    </Box>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      startIcon={<ShoppingBasketRoundedIcon />}
+                      onClick={closeTicket}
+                      className="customer-next-sale-button"
+                    >
+                      Nueva venta
+                    </Button>
                   </Box>
-                  <Divider sx={{ my: { xs: 1, sm: 1.5 }, flexShrink: 0 }} />
-                  <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 2, p: { xs: 1.5, sm: 2 }, flexShrink: 0, borderRadius: 2.5, color: "#fff", background: "linear-gradient(110deg, #2785c8 0%, #1265aa 100%)", boxShadow: "0 10px 24px rgba(18, 101, 170, 0.18)" }}>
-                    <Typography sx={{ fontSize: { xs: 16, sm: 20 }, fontWeight: 700 }}>Total</Typography>
-                    <Typography aria-label={`Total ${formatAmount(customerSale.total)} pesos`} sx={{ fontSize: { xs: 23, sm: 30 }, fontWeight: 800, whiteSpace: "nowrap" }}>$ {formatAmount(customerSale.total)}</Typography>
+                )}
+              </Box>
+            ) : hasItems ? (
+              <Box
+                aria-live="polite"
+                aria-relevant="additions removals"
+                className="customer-purchase-view"
+              >
+                <Box className="customer-purchase-heading">
+                  <Box className="customer-purchase-heading-icon">
+                    <ShoppingBasketRoundedIcon />
+                  </Box>
+                  <Box>
+                    <Typography className="customer-section-eyebrow">En tu compra</Typography>
+                    <Typography component="h2" className="customer-section-title">
+                      Detalle de la compra
+                    </Typography>
+                  </Box>
+                  <Box className="customer-item-count">
+                    {customerSale.items.length} {customerSale.items.length === 1 ? "producto" : "productos"}
                   </Box>
                 </Box>
-              ) : (
-                <Box role="img" aria-label="Pantalla inicial de Libreta Digital" sx={{ flex: 1, minHeight: 0, minWidth: 0, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", backgroundColor: "#e8f4fb" }}>
-                  <Box component="img" src="/catalogo/pantalla-inicio.png" alt="Libreta Digital con el acceso visual a Ventas al Contado" sx={{ display: "block", width: "100%", height: "100%", minWidth: 0, minHeight: 0, objectFit: "contain", objectPosition: "center" }} />
+
+                <Box className="customer-items-columns">
+                  <Box>Producto</Box>
+                  <Box className="customer-column-quantity">Cantidad</Box>
+                  <Box className="customer-column-unit-price">Precio unitario</Box>
+                  <Box className="customer-column-subtotal">Subtotal</Box>
                 </Box>
-              )}
-            </CardContent>
-          </Card>
-        </Box>
+
+                <Box className="customer-items-list">
+                  {customerSale.items.map((item) => (
+                    <Box key={item.id} className="customer-item-row">
+                      <Typography className="customer-item-name">{item.product}</Typography>
+                      <Typography className="customer-item-quantity">{item.quantity}</Typography>
+                      <Typography className="customer-item-unit-price">
+                        $ {formatAmount(item.price)}
+                      </Typography>
+                      <Typography className="customer-item-subtotal">
+                        <span>Subtotal</span>$ {formatAmount(item.price * item.quantity)}
+                      </Typography>
+                      <Typography className="customer-item-mobile-detail">
+                        Cantidad: {item.quantity} · Precio unitario: $ {formatAmount(item.price)}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+
+                <Box className="customer-total-wrap">
+                  <Divider className="customer-total-divider" />
+                  <Box className="customer-total-panel">
+                    <Box>
+                      <Typography className="customer-total-caption">Total a pagar</Typography>
+                      <Typography className="customer-total-note">Pesos uruguayos</Typography>
+                    </Box>
+                    <Typography
+                      aria-label={`Total ${formatAmount(customerSale.total)} pesos`}
+                      className="customer-total-amount"
+                    >
+                      $ {formatAmount(customerSale.total)}
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            ) : (
+              <Box component="section" aria-label="Productos destacados" className="customer-idle-view">
+                <Box
+                  component="img"
+                  src="/catalogo/pantalla-inicio.png"
+                  alt="Libreta Digital con el acceso visual a Ventas al Contado"
+                  className="customer-idle-image"
+                />
+                {activePromo && (
+                  <Box className="customer-promo-card" aria-label="Producto destacado">
+                    <Box className="customer-promo-image-wrap">
+                      <Box
+                        component="img"
+                        key={activePromo.image}
+                        src={activePromo.image}
+                        alt={activePromo.title}
+                        className="customer-promo-image"
+                      />
+                    </Box>
+                    <Box className="customer-promo-details" key={activePromo.title}>
+                      <Typography className="customer-promo-label">Destacado · {activePromo.category}</Typography>
+                      <Typography className="customer-promo-name">{activePromo.title}</Typography>
+                      <Typography className="customer-promo-price">
+                        {activePromo.price !== undefined
+                          ? `$ ${formatAmount(activePromo.price)}`
+                          : "Consultar en caja"}
+                      </Typography>
+                    </Box>
+                    <Box className="customer-promo-controls">
+                      <IconButton
+                        aria-label="Producto anterior"
+                        onClick={() => changePromo(-1)}
+                        className="customer-promo-arrow"
+                      >
+                        <ChevronLeftRoundedIcon />
+                      </IconButton>
+                      <Typography className="customer-promo-position">
+                        {String(promoIndex + 1).padStart(2, "0")} / {promotionalItems.length}
+                      </Typography>
+                      <IconButton
+                        aria-label="Producto siguiente"
+                        onClick={() => changePromo(1)}
+                        className="customer-promo-arrow"
+                      >
+                        <ChevronRightRoundedIcon />
+                      </IconButton>
+                    </Box>
+                  </Box>
+                )}
+              </Box>
+            )}
+          </CardContent>
+        </Card>
       </Box>
-    </>
+    </Box>
   );
 }
