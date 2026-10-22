@@ -14,9 +14,10 @@ import { SaleTicket } from "../models/SaleTicket";
 
 interface TicketProps {
   ticket: SaleTicket;
+  showActions?: boolean;
 }
 
-export default function Ticket({ ticket }: TicketProps) {
+export default function Ticket({ ticket, showActions = true }: TicketProps) {
   const ticketRef = useRef<HTMLDivElement>(null);
 
   const generatePdf = async () => {
@@ -299,7 +300,7 @@ export default function Ticket({ ticket }: TicketProps) {
         </Typography>
       </Box>
 
-      <Stack
+      {showActions && <Stack
         spacing={2}
         sx={{
           maxWidth: 360,
@@ -340,7 +341,7 @@ export default function Ticket({ ticket }: TicketProps) {
         >
           Nueva Venta
         </Button>
-      </Stack>
+      </Stack>}
     </>
   );
 }

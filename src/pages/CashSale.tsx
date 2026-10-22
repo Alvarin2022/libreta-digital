@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Autocomplete,
@@ -15,6 +15,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import DesktopWindowsRoundedIcon from "@mui/icons-material/DesktopWindowsRounded";
 
 import { SaleItem } from "../models/SaleItem";
 import { useSale } from "../context/useSale";
@@ -38,7 +39,16 @@ export default function CashSale() {
   const priceRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const { ticket, setTicket, addToHistory, nextTicketId } = useSale();
+  const {
+    ticket,
+    setTicket,
+    addToHistory,
+    nextTicketId,
+    publishCustomerSale,
+    customerTicketOpen,
+    customerTicketClosed,
+    resetCustomerTicketFlow,
+  } = useSale();
 
   const addItem = () => {
     setProductError("");
@@ -111,11 +121,15 @@ export default function CashSale() {
 
     setTicket(ticket);
     addToHistory(ticket);
+    resetCustomerTicketFlow();
 
     setCompleted(true);
   };
 
   const newSale = () => {
+    if (!customerTicketClosed || customerTicketOpen) return;
+
+    resetCustomerTicketFlow();
     setItems([]);
 
     setCompleted(false);
@@ -132,6 +146,15 @@ export default function CashSale() {
     product.trim() !== "" && price.trim() !== "" && Number(price) > 0;
 
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  useEffect(() => {
+    publishCustomerSale(
+      items,
+      total,
+      completed ? "completed" : items.length > 0 ? "shopping" : "welcome",
+      completed ? ticket : null,
+    );
+  }, [items, total, completed, ticket, publishCustomerSale]);
 
   if (completed) {
     return (
@@ -250,6 +273,7 @@ export default function CashSale() {
               mt: 2,
             }}
             onClick={newSale}
+            disabled={!customerTicketClosed || customerTicketOpen}
           >
             🛒 Nueva venta
           </Button>
@@ -260,7 +284,10 @@ export default function CashSale() {
             sx={{
               mt: 2,
             }}
-            onClick={() => navigate("/")}
+            onClick={() => {
+              publishCustomerSale([], 0, "welcome");
+              navigate("/");
+            }}
           >
             🏠 Volver al inicio
           </Button>
@@ -277,12 +304,30 @@ export default function CashSale() {
     >
       <Button
         variant="text"
-        onClick={() => navigate("/")}
+        onClick={() => {
+          publishCustomerSale([], 0, "welcome");
+          navigate("/");
+        }}
         sx={{
           mb: 2,
         }}
       >
         ← Volver al inicio
+      </Button>
+
+      <Button
+        variant="outlined"
+        startIcon={<DesktopWindowsRoundedIcon />}
+        onClick={() =>
+          window.open(
+            `${window.location.origin}/cliente`,
+            "libreta-pantalla-cliente",
+            "popup,width=1280,height=800",
+          )
+        }
+        sx={{ mb: 2, ml: 1, whiteSpace: "nowrap" }}
+      >
+        Pantalla cliente
       </Button>
 
       <Typography
